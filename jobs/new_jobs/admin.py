@@ -1,8 +1,20 @@
 from django.contrib import admin
 from  .models import NewJob
+from condidates.models import CondidateJobMapping
+
+class CandidateInline(admin.TabularInline):
+    model = CondidateJobMapping
+
+    def get_readonly_fields(self,request,*args,**kwargs):
+        if request.user.is_superuser:
+            return []
+        else:
+            return ('condidate',)
+
 
 class JobAdmin(admin.ModelAdmin):
     exclude = ('creator',)
+    inlines = (CandidateInline,)
     
 
     def get_queryset(self,request,*args,**kwargs):
@@ -18,8 +30,9 @@ class JobAdmin(admin.ModelAdmin):
             return ('position_name',)
 
     def save_model(self, request, obj, form, change):
-        obj.creator = request.user
-        obj.save()
+        if not obj.pk:
+            obj.creator = request.user
+            obj.save()
 
 
 admin.site.register(NewJob, JobAdmin)
