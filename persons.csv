@@ -1,0 +1,6 @@
+id,name,email,birth_date,location,test
+1,John,john@doe.com,2016-08-11,Helsinki,test
+2,Peter,peter@example.com,2016-08-11,Helsinki,test
+3,Maria,maria@gmail.com,2016-08-11,Barcelona,test
+4,Vitor,vitor@freitas.com,2016-08-11,Oulu,test
+5,Erica,erica@testgmail.com,2016-08-11,Oulu,test
