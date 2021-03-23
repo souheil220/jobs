@@ -28,7 +28,14 @@ class Condidate(models.Model):
     will_relocate = models.BooleanField(default=False)
 
     def __str__(self):
-        return "{}-{}".format(self.name,self.mobile)
+        return "{}".format(self.name)
+
+    def is_engaged(self):
+        jobs = CondidateJobMapping.objects.filter(condidate = self).exclude(status=STATUS_REJECTED).all()
+        if len(jobs) == 0:
+            return "no"
+        else:
+            return "yes"
 
 class CondidateJobMapping(models.Model):
     condidate = models.ForeignKey(Condidate,on_delete=models.CASCADE)
@@ -36,5 +43,30 @@ class CondidateJobMapping(models.Model):
     status = models.CharField(max_length=20,choices=STATUS_CHOICES, default = STATUS_PENDING )
     feedback = models.TextField(blank=True,null=True)
 
+    def age(self):
+        return self.condidate.age
+    
+    def position_name(self):
+        return self.jobs.position_name
+
+    def name(self):
+        return self.condidate.name
+
+    def city(self):
+        return self.condidate.city
+
+    def mobile(self):
+        return self.condidate.mobile
+
+    def gender(self):
+        return self.condidate.gender
+    
+    def will_relocate(self):
+        return self.condidate.will_relocate
+
+
     def __str__(self):
         return "{}-{}".format(self.condidate.name,self.jobs.position_name)
+
+    class Meta:
+        verbose_name_plural = "Review Condidates"
